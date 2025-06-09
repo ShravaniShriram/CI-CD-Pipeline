@@ -1,13 +1,25 @@
-# k8s/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: devops-backend-service
 spec:
-  type: NodePort
   selector:
-    app: backend
+    app: devops-backend
   ports:
-    - port: 5000         # internal cluster port
-      targetPort: 5000   # pod/container port
-      nodePort: 30080    # external access port (accessible via minikube IP)
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-frontend-service
+spec:
+  selector:
+    app: devops-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
