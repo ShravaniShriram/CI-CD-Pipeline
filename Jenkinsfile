@@ -2,64 +2,53 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins DockerHub credentials ID
-        DOCKERHUB_USERNAME = "tpathak21"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Replace with actual Jenkins credentials ID
+        DOCKERHUB_USER = 'tpathak21'
     }
 
     stages {
-        stage('Checkout') {
+
+        stage('Checkout Code from GitHub') {
             steps {
-                git branch: 'main', url: 'https://github.com/TejPATHAK/DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes.git'
+                git 'https://github.com/TejPATHAK/DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes.git'
             }
         }
 
-        stage('Build Backend Image') {
+        stage('Build Docker Images') {
             steps {
-                script {
-                    docker.build("${env.DOCKERHUB_USERNAME}/devops-backend:latest", "./backend")
-                }
-            }
-        }
+                sh '''
+                    echo "Building Backend Image"
+                    docker build -t $DOCKERHUB_USER/devops-backend:latest ./backend
 
-        stage('Build Frontend Image') {
-            steps {
-                script {
-                    docker.build("${env.DOCKERHUB_USERNAME}/devops-frontend:latest", "./frontend")
-                }
+                    echo "Building Frontend Image"
+                    docker build -t $DOCKERHUB_USER/devops-frontend:latest ./frontend
+                '''
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
-                        echo 'Logged in to DockerHub'
-                    }
-                }
+                sh '''
+                    echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_USER" --password-stdin
+                '''
             }
         }
 
-        stage('Push Backend Image') {
+        stage('Push Docker Images') {
             steps {
-                script {
-                    docker.image("${env.DOCKERHUB_USERNAME}/devops-backend:latest").push()
-                }
-            }
-        }
-
-        stage('Push Frontend Image') {
-            steps {
-                script {
-                    docker.image("${env.DOCKERHUB_USERNAME}/devops-frontend:latest").push()
-                }
+                sh '''
+                    docker push $DOCKERHUB_USER/devops-backend:latest
+                    docker push $DOCKERHUB_USER/devops-frontend:latest
+                '''
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/backend-deployment.yaml'
-                sh 'kubectl apply -f k8s/frontend-deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
+                sh '''
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                '''
             }
         }
     }
