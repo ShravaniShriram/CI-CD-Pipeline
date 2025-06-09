@@ -41,7 +41,7 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
                         docker.image("tpathak21/devops-backend:latest").push()
                         docker.image("tpathak21/devops-frontend:latest").push()
                     }
