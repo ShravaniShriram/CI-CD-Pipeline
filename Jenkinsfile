@@ -2,53 +2,57 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Replace with actual Jenkins credentials ID
-        DOCKERHUB_USER = 'tpathak21'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
     }
 
     stages {
-
         stage('Checkout Code from GitHub') {
             steps {
-                git 'https://github.com/TejPATHAK/DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes.git'
+                git branch: 'main', url: 'https://github.com/TejPATHAK/DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes.git'
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build Backend Image') {
             steps {
-                sh '''
-                    echo "Building Backend Image"
-                    docker build -t $DOCKERHUB_USER/devops-backend:latest ./backend
+                script {
+                    docker.build("tpathak21/devops-backend:latest", "./backend")
+                }
+            }
+        }
 
-                    echo "Building Frontend Image"
-                    docker build -t $DOCKERHUB_USER/devops-frontend:latest ./frontend
-                '''
+        stage('Build Frontend Image') {
+            steps {
+                script {
+                    docker.build("tpathak21/devops-frontend:latest", "./frontend")
+                }
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                sh '''
-                    echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_USER" --password-stdin
-                '''
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                        echo 'Logged in to DockerHub'
+                    }
+                }
             }
         }
 
-        stage('Push Docker Images') {
+        stage('Push Images') {
             steps {
-                sh '''
-                    docker push $DOCKERHUB_USER/devops-backend:latest
-                    docker push $DOCKERHUB_USER/devops-frontend:latest
-                '''
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                        docker.image("tpathak21/devops-backend:latest").push()
+                        docker.image("tpathak21/devops-frontend:latest").push()
+                    }
+                }
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-                '''
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
             }
         }
     }
