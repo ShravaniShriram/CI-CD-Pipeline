@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy requirements and install
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install Flask==2.0.3 Werkzeug==2.0.3
 
 # Copy app code
 COPY app.py .
