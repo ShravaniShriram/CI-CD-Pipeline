@@ -9,6 +9,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
+      nodePort: 30080 
   type: NodePort
 ---
 apiVersion: v1
@@ -22,4 +23,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: 30081 
+  type: NodePort     
   type: LoadBalancer
