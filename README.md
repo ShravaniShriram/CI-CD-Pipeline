@@ -12,8 +12,6 @@ Design and automate a robust CI/CD pipeline to deploy a multi-tier web applicati
 
 The goal is to build a reliable, production-ready DevOps workflow.
 
----
-
 ## 🌐 Hosting Environment
 
 - **Cloud Platform**: AWS EC2
@@ -21,8 +19,6 @@ The goal is to build a reliable, production-ready DevOps workflow.
 - **Operating System**: Ubuntu 22.04 LTS
 - **Security Group Ports Opened**: 22 (SSH), 8080 (Jenkins), 30080 (Backend), 30081 (Frontend)
 - **Minikube Tunnel**: Enabled using `minikube tunnel --bind-address 0.0.0.0`
-
----
 
 ## 🛠️ Tools & Technologies
 
@@ -36,11 +32,8 @@ The goal is to build a reliable, production-ready DevOps workflow.
 | Nginx      | Frontend static file server        |
 | Flask      | Python backend web server          |
 
----
-
 ## 📁 Project Structure
 
-```
 DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes/
 ├── backend/
 │   ├── Dockerfile
@@ -56,9 +49,6 @@ DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes/
 ├── Jenkinsfile
 ├── docker-compose.yml
 └── README.md
-```
-
----
 
 ## ⚙️ Setup and Installation
 
@@ -89,8 +79,6 @@ Start Minikube:
 minikube start --driver=docker
 minikube tunnel --bind-address 0.0.0.0
 ```
-
----
 
 ## 📦 Docker: Containerization
 
@@ -201,8 +189,6 @@ pipeline {
 }
 ```
 
----
-
 ## ✅ Output Validation
 
 ### curl Test
@@ -216,7 +202,6 @@ curl http://<EC2-PUBLIC-IP>:30081    # Frontend
 
 - All stages: Clone > Build > Push > Deploy should show as green ✅
 
----
 
 ## 📸 Suggested Output Images
 
@@ -225,14 +210,11 @@ curl http://<EC2-PUBLIC-IP>:30081    # Frontend
 - Browser view of frontend
 - `curl` output from backend
 
----
-
 ## 📎 Links
 
 - 🔗 GitHub Repository: [DevOps-CI-CD-Pipeline](https://github.com/tpathak21/DevOps-CI-CD-Pipeline-using-Jenkins-Docker-and-Kubernetes)
 - 🔗 LinkedIn Profile: [Tejaswi Pathak](https://www.linkedin.com/in/tejaswi-pathak)
 
----
 
 ## 📚 Conclusion
 
