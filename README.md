@@ -78,7 +78,7 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 Install kubectl:
 
-```bash
+```
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
 ```
@@ -112,6 +112,7 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 ### Build & Push Images
+```
 docker build -t tpathak21/devops-backend:latest ./backend
 docker build -t tpathak21/devops-frontend:latest ./frontend
 
@@ -121,7 +122,7 @@ docker push tpathak21/devops-frontend:latest
 ```
 ### Apply Resources
 
-```bash
+```
 kubectl apply -f k8s/
 kubectl get pods -o wide
 kubectl get svc
@@ -196,6 +197,7 @@ pipeline {
         }
     }
 }
+`
 ---
 ## ✅ Output Validation
 
