@@ -201,8 +201,6 @@ pipeline {
 }
 ```
 
----
-
 ## ✅ Output Validation
 
 ### curl Test
@@ -216,16 +214,6 @@ curl http://<EC2-PUBLIC-IP>:30081    # Frontend
 
 - All stages: Clone > Build > Push > Deploy should show as green ✅
 
----
-
-## 📸 Suggested Output Images
-
-- Jenkins pipeline success screen
-- `kubectl get pods` and `kubectl get svc` terminal output
-- Browser view of frontend
-- `curl` output from backend
-
----
 
 ## 📎 Links
 
