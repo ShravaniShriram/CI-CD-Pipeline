@@ -94,34 +94,28 @@ minikube tunnel --bind-address 0.0.0.0
 
 ## 📦 Docker: Containerization
 
-### Backend Dockerfile
-
-```dockerfile
-FROM python:3.9
+## Backend Dockerfile
+FROM python:3.9-slim
 WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install Flask==2.0.3 Werkzeug==2.0.3
+COPY app.py .
 EXPOSE 5000
 CMD ["python", "app.py"]
-```
-
-### Frontend Dockerfile
-
-```dockerfile
+## Frontend Dockerfile
 FROM nginx:alpine
 COPY index.html /usr/share/nginx/html
-```
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 
 ### Build & Push Images
-
-```bash
 docker build -t tpathak21/devops-backend:latest ./backend
 docker build -t tpathak21/devops-frontend:latest ./frontend
 
 docker push tpathak21/devops-backend:latest
 docker push tpathak21/devops-frontend:latest
-```
 
+```
 ### Apply Resources
 
 ```bash
