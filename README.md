@@ -135,7 +135,7 @@ kubectl get svc
 ## 🔄 Jenkins CI/CD Pipeline
 
 ### Jenkinsfile
-
+---
 pipeline {
     agent any
 
@@ -199,13 +199,12 @@ pipeline {
         }
     }
 }
-```
-
+---
 ## ✅ Output Validation
 
-### curl Test
+curl Test
 
-```bash
+```
 curl http://<EC2-PUBLIC-IP>:30080    # Backend
 curl http://<EC2-PUBLIC-IP>:30081    # Frontend
 ```
